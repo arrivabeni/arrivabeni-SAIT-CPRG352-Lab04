@@ -16,51 +16,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.Note;
 
-/**
- *
- * @author Marcelo Vieira
- */
 public class NoteServlet extends HttpServlet {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        String jspDest = "/WEB-INF/viewnote.jsp";
+        
         // Determine if edit mode or not
         String editParam = request.getParameter("edit");
         boolean isEditMode = false;
         if (editParam != null) {
             isEditMode = true;
+            jspDest = "/WEB-INF/editnote.jsp";
         }
-        request.setAttribute("isEditMode", isEditMode);
 
         // get the Note object with file's content and set as 
         // an attribute in the request object
         request.setAttribute("note", getNoteFromFile(isEditMode));
 
         // Load a JSP from this servlet
-        getServletContext().getRequestDispatcher("/WEB-INF/viewnote.jsp").forward(request, response);
+        getServletContext().getRequestDispatcher(jspDest).forward(request, response);
         // After a JSP has been loaded, stop the code call
         return;
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
